@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
+
+  /* Pokemon routes */
   {
     path: '/',
     redirect: '/pokemon'
@@ -35,7 +37,33 @@ const routes = [
       }
     ] 
   },
- 
+
+  /* DBZ routes */
+  {
+    path: '/dbz',
+    name: 'dbz',
+    component: () => import(/* webpackChunkName: "DBZLayout" */ '@/modules/dbz/layouts/DBZLayout'),
+    children: [
+      {
+        path: 'characters',
+        name: 'dbz-characters',
+        component: () => import(/* webpackChunkName: "Characters" */ '@/modules/dbz/pages/CharactersPage'),
+      },
+      {
+        path: 'about',
+        name: 'dbz-about',
+        component: () => import(/* webpackChunkName: "About" */ '@/modules/dbz/pages/AboutPage'),
+      },
+      {
+        path: '',
+        redirect: { name: 'dbz-characters' }
+      }
+    ]
+  },
+
+
+
+ /* WildCard route */
   { 
     path: '/:pathMatch(.*)*', 
     component: () => import(/* webpackChunkName: "NoPageFound" */ '@/modules/shared/pages/NoPageFound') 
