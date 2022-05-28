@@ -75,18 +75,43 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach( ( to, from, next ) => {
-  console.log( {to, from, next} )
+// router.beforeEach( ( to, from, next ) => {
+//   console.log( {to, from, next} )
 
-  const random = Math.random() * 100
+//   const random = Math.random() * 100
 
-  if (random > 50) {
-    console.log('Authenticated');
-    next()
-  } else {
-    console.log(random, 'blocked by guard')
-    next({ name: 'pokemon-home' })
-  }
+//   if (random > 50) {
+//     console.log('Authenticated');
+//     next()
+//   } else {
+//     console.log(random, 'blocked by guard')
+//     next({ name: 'pokemon-home' })
+//   }
+// })
+
+const canAccess = () => {
+  return new Promise( resolve => {
+
+    const random = Math.random() * 100
+
+    if (random > 50) {
+      console.log('Authenticated - canAccess');
+      resolve(true)
+    } else {
+      console.log(random, 'blocked by guard - canAccess')
+      resolve(false)
+    }
+
+  })
+}
+
+router.beforeEach( async( to, from, next ) => {
+
+  const authorized = await canAccess()
+
+  authorized 
+  ? next() 
+  : next({ name: 'pokemon-home' })
 })
 
 
