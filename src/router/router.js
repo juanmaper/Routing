@@ -75,4 +75,19 @@ const router = createRouter({
   routes,
 })
 
+router.beforeEach( ( to, from, next ) => {
+  console.log( {to, from, next} )
+
+  const random = Math.random() * 100
+
+  if (random > 50) {
+    console.log('Authenticated');
+    next()
+  } else {
+    console.log(random, 'blocked by guard')
+    next({ name: 'pokemon-home' })
+  }
+})
+
+
 export default router
